@@ -1,0 +1,95 @@
+import { useState } from 'react'
+import { X } from 'lucide-react'
+import { OrganizationFormData } from '../types'
+
+interface OrganizationModalProps {
+  isOpen: boolean
+  onClose: () => void
+  onSubmit: (data: OrganizationFormData) => void
+  initialData?: OrganizationFormData
+  title: string
+}
+
+export default function OrganizationModal({ isOpen, onClose, onSubmit, initialData, title }: OrganizationModalProps) {
+  const [formData, setFormData] = useState<OrganizationFormData>(
+    initialData || {
+      name: '',
+      domain: '',
+      status: 'active',
+    }
+  )
+
+  if (!isOpen) return null
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    onSubmit(formData)
+    onClose()
+  }
+
+  return (
+    <div className="fixed inset-0 bg-overlay/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 !mt-0 animate-fade-in">
+      <div className="bg-surface rounded-xl border border-border shadow-xl animate-scale-in w-full max-w-md">
+        <div className="flex items-center justify-between p-6 border-b border-border">
+          <h2 className="text-xl font-semibold text-main">{title}</h2>
+          <button onClick={onClose} className="p-2 hover:bg-background rounded-lg transition-colors">
+            <X className="w-5 h-5 text-secondary" />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-main mb-2">Organization Name</label>
+            <input
+              type="text"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-main mb-2">Domain</label>
+            <input
+              type="text"
+              value={formData.domain}
+              onChange={(e) => setFormData({ ...formData, domain: e.target.value })}
+              placeholder="example.com"
+              className="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-main mb-2">Status</label>
+            <select
+              value={formData.status}
+              onChange={(e) => setFormData({ ...formData, status: e.target.value as 'active' | 'inactive' })}
+              className="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            >
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 px-4 py-2 border border-border rounded-lg hover:bg-background transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
+}

@@ -1,0 +1,177 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Theme tokens
+   Colors are stored as space-separated RGB channels so Tailwind can apply
+   opacity modifiers (e.g. bg-primary/10). They are consumed through
+   tailwind.config.js - never hardcode hex colors in components.
+   ========================================================================== */
+@layer base {
+  :root {
+    color-scheme: light;
+
+    --background: 246 248 251; /* #F6F8FB app canvas */
+    --surface: 255 255 255; /* #FFFFFF cards, header, sidebar, modals */
+    --main: 15 23 42; /* #0F172A primary text */
+    --secondary: 86 101 121; /* #566579 muted text */
+    --border: 226 232 240; /* #E2E8F0 */
+
+    --primary: 79 70 229; /* #4F46E5 fills (white text on top) */
+    --primary-hover: 67 56 202; /* #4338CA */
+    --primary-light: 129 140 248; /* #818CF8 */
+    --primary-text: 79 70 229; /* #4F46E5 links / icons / active labels */
+
+    --success: 20 113 58; /* #14713A */
+    --warning: 158 74 7; /* #9E4A07 */
+    --error: 200 30 30; /* #C81E1E fills (white text on top) */
+    --error-text: 200 30 30; /* #C81E1E */
+    --info: 29 78 216; /* #1D4ED8 */
+
+    --overlay: 15 23 42; /* modal backdrop */
+
+    --shadow-sm: 0 1px 2px 0 rgb(15 23 42 / 0.05);
+    --shadow-md: 0 2px 4px -1px rgb(15 23 42 / 0.06), 0 4px 12px -2px rgb(15 23 42 / 0.08);
+    --shadow-lg: 0 4px 6px -2px rgb(15 23 42 / 0.05), 0 12px 28px -6px rgb(15 23 42 / 0.12);
+    --shadow-xl: 0 8px 12px -4px rgb(15 23 42 / 0.06), 0 24px 48px -12px rgb(15 23 42 / 0.2);
+    --shadow-glow: 0 6px 16px -4px rgb(79 70 229 / 0.45);
+  }
+
+  .dark {
+    color-scheme: dark;
+
+    --background: 11 16 32; /* #0B1020 */
+    --surface: 18 26 44; /* #121A2C */
+    --main: 238 242 248; /* #EEF2F8 */
+    --secondary: 152 166 188; /* #98A6BC */
+    --border: 35 46 69; /* #232E45 */
+
+    --primary: 91 94 240; /* #5B5EF0 fills (white text on top) */
+    --primary-hover: 74 77 220; /* #4A4DDC */
+    --primary-light: 165 168 252; /* #A5A8FC */
+    --primary-text: 154 157 251; /* #9A9DFB readable on dark surfaces */
+
+    --success: 52 211 153; /* #34D399 */
+    --warning: 251 191 36; /* #FBBF24 */
+    --error: 220 38 38; /* #DC2626 fills (white text on top) */
+    --error-text: 251 138 138; /* #FB8A8A readable on dark surfaces */
+    --info: 96 165 250; /* #60A5FA */
+
+    --overlay: 2 6 14;
+
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);
+    --shadow-md: 0 2px 4px -1px rgb(0 0 0 / 0.4), 0 4px 12px -2px rgb(0 0 0 / 0.35);
+    --shadow-lg: 0 4px 6px -2px rgb(0 0 0 / 0.4), 0 12px 28px -6px rgb(0 0 0 / 0.5);
+    --shadow-xl: 0 8px 12px -4px rgb(0 0 0 / 0.45), 0 24px 48px -12px rgb(0 0 0 / 0.65);
+    --shadow-glow: 0 6px 18px -4px rgb(91 94 240 / 0.55);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-background text-main font-sans antialiased;
+  }
+
+  ::selection {
+    background-color: rgb(var(--primary) / 0.28);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: rgb(var(--secondary) / 0.7);
+  }
+
+  /* Keyboard focus ring that works on both themes */
+  :focus-visible {
+    outline: 2px solid rgb(var(--primary));
+    outline-offset: 2px;
+  }
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: none; /* these already render a focus:ring-2 ring-primary */
+  }
+
+  /* Browser autofill paints a light background; keep it on-theme */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  select:-webkit-autofill {
+    -webkit-text-fill-color: rgb(var(--main));
+    caret-color: rgb(var(--main));
+    -webkit-box-shadow: 0 0 0 1000px rgb(var(--background)) inset;
+    transition: background-color 9999s ease-out 0s;
+  }
+
+  /* Themed scrollbars */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--secondary) / 0.35) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--secondary) / 0.35);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(var(--secondary) / 0.55);
+    background-clip: content-box;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Smooth cross-fade while switching themes. The ThemeProvider adds this class
+   to <html> for ~300ms on a user-initiated change only, so normal hover and
+   transform transitions are not affected the rest of the time. */
+.theme-transition,
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  transition:
+    background-color 250ms ease,
+    border-color 250ms ease,
+    color 250ms ease,
+    fill 250ms ease,
+    stroke 250ms ease,
+    box-shadow 250ms ease !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-transition,
+  .theme-transition *,
+  .theme-transition *::before,
+  .theme-transition *::after {
+    transition: none !important;
+  }
+  .animate-fade-in,
+  .animate-scale-in,
+  .animate-menu-in {
+    animation: none !important;
+  }
+}
